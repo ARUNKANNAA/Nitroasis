@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NITROASIS — Professional Smart Agriculture & IoT Documentation Platform</title>
+  <meta name="description" content="Professional engineering documentation and interactive 3D CAD & IoT testbed for Nitroasis, an AI and IoT-based precision agriculture and smart irrigation system.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- 3D WebGL Dependencies (Locally Hosted) -->
+  <script src="lib/three.min.js"></script>
+  <script src="lib/OrbitControls.js"></script>
+  <script src="lib/STLLoader.js"></script>
+</head>
+<body data-theme="dark">
+
+  <!-- ==========================================================================
+       NAVIGATION BAR
+       ========================================================================== -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="#overview" class="brand">
+        <div class="brand-icon">🌱</div>
+        <div class="brand-text">
+          <h1>NITROASIS</h1>
+          <span>AI & IoT Precision Farming</span>
+        </div>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#overview" class="nav-link active">Overview</a></li>
+          <li><a href="#cad-viewer" class="nav-link">3D CAD Viewer</a></li>
+          <li><a href="#simulator" class="nav-link">IoT Simulator</a></li>
+          <li><a href="#architecture" class="nav-link">Architecture</a></li>
+          <li><a href="#pinout" class="nav-link">Pinout & Wiring</a></li>
+          <li><a href="#tinyml" class="nav-link">TinyML Model</a></li>
+          <li><a href="#irrigation" class="nav-link">Smart Irrigation</a></li>
+          <li><a href="#agronomist" class="nav-link">AI Assistant</a></li>
+          <li><a href="#code" class="nav-link">Firmware & API</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button id="audioToggleBtn" class="btn-icon" title="Toggle Hardware Audio Effects">
+          🔇 Muted
+        </button>
+        <button id="themeToggleBtn" class="btn-icon" title="Toggle Color Theme">
+          🌙 Dark
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       HERO SECTION
+       ========================================================================== -->
+  <section id="overview" class="hero">
+    <div class="hero-content">
+      <div class="hero-pill">
+        <span class="live-pulse"></span>
+        Edge Computing • On-Device TinyML • Dual-Core FreeRTOS
+      </div>
+      <h1 class="hero-title">
+        Autonomous Precision Agriculture <br/>
+        <span class="gradient-text">Engineered for the Field</span>
+      </h1>
+      <p class="hero-subtitle">
+        Nitroasis delivers edge-computed soil diagnostics, on-device machine learning crop classification, anti-chatter smart irrigation, and solar-powered durability with zero dependence on remote cloud servers.
+      </p>
+
+      <div class="hero-stats">
+        <div class="stat-box">
+          <div class="stat-num">ESP32-S3</div>
+          <div class="stat-label">Dual-Core 240MHz</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">&lt; 12ms</div>
+          <div class="stat-label">TinyML Inference</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">IP65</div>
+          <div class="stat-label">Weatherproof STL CAD</div>
+        </div>
+      </div>
+
+      <div class="hero-buttons">
+        <a href="#cad-viewer" class="btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+          Inspect 3D CAD Enclosure
+        </a>
+        <a href="#simulator" class="btn-secondary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          Launch IoT Hardware Simulator
+        </a>
+      </div>
+    </div>
+
+    <!-- Actual Hardware Showcase Card -->
+    <div class="hero-visual">
+      <div class="hardware-card">
+        <div class="hardware-img-wrap">
+          <img src="hardware.jpg" alt="Nitroasis Real Field Sensor Hardware and 3D Printed Enclosure" class="hardware-img">
+          <div class="hardware-badge">PHYSICAL HARDWARE PROTOTYPE • ARUN HOBBIES</div>
+        </div>
+        <div class="hardware-specs">
+          <div class="spec-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            FreeRTOS Core 0 & Core 1
+          </div>
+          <div class="spec-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
+            SoftAP: "CropAI" (192.168.4.1)
+          </div>
+          <div class="spec-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            1.3" SH1106 OLED (RoboEyes/HUD)
+          </div>
+          <div class="spec-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+            Anti-Chatter Hysteresis Relay
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       INTERACTIVE 3D CAD STL VIEWER SECTION
+       ========================================================================== -->
+  <section id="cad-viewer" class="section">
+    <div class="section-header">
+      <span class="section-tag">Interactive CAD & Mechanical Engineering</span>
+      <h2 class="section-title">3D Enclosure STL Viewer & Fabrication Inspector</h2>
+      <p class="section-desc">
+        Directly inspect, orbit, pan, and zoom the real 3D printable STL files of the Nitroasis weather-sealed field enclosure. Toggle between the top solar cover, the bottom electronics chassis, and the full assembled view.
+      </p>
+    </div>
+
+    <div class="cad-viewer-card">
+      <!-- Top Navigation & Toolbar -->
+      <div class="cad-top-bar">
+        <div class="cad-model-tabs">
+          <button class="cad-model-btn active" data-model="top">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="8" rx="2"></rect><path d="M7 11v4a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-4"></path></svg>
+            Top Enclosure (transmitter_top.stl)
+          </button>
+          <button class="cad-model-btn" data-model="bottom">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="13" width="18" height="8" rx="2"></rect><path d="M7 13V9a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v4"></path></svg>
+            Bottom Chassis (transmitter_bottom.stl)
+          </button>
+          <button class="cad-model-btn" data-model="assembly">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+            Complete Assembly View
+          </button>
+        </div>
+
+        <div class="cad-view-options">
+          <!-- Material Color Picker -->
+          <div class="cad-color-picker-wrap" title="Select Filament Simulation Material">
+            <span style="font-size: 0.72rem; color: var(--text-dim); margin-right: 2px;">Filament:</span>
+            <div class="cad-color-swatch swatch-emerald active" data-color="emerald" title="PETG Forest Green"></div>
+            <div class="cad-color-swatch swatch-charcoal" data-color="charcoal" title="ASA Matte Charcoal"></div>
+            <div class="cad-color-swatch swatch-orange" data-color="orange" title="Safety Solar Orange"></div>
+            <div class="cad-color-swatch swatch-cyan" data-color="cyan" title="Industrial Polymer Cyan"></div>
+          </div>
+
+          <button id="btnCadAutoRotate" class="cad-tool-btn active" title="Toggle 360° Automatic Showcase Rotation">
+            🔄 Auto-Rotate
+          </button>
+          <button id="btnCadWireframe" class="cad-tool-btn" title="Toggle Wireframe Mesh">
+            📐 Wireframe
+          </button>
+          <button id="btnCadGrid" class="cad-tool-btn active" title="Toggle Reference Floor Grid">
+            ▦ Grid
+          </button>
+          <button id="btnCadResetCam" class="cad-tool-btn" title="Reset Isometric Camera Angle">
+            🎯 Reset Camera
+          </button>
+        </div>
+      </div>
+
+      <!-- WebGL Canvas Container -->
+      <div id="cadCanvasContainer">
+        <!-- Loading State -->
+        <div id="cadLoadingIndicator" class="cad-loading">
+          <div class="spinner"></div>
+          <span style="font-size: 0.88rem; font-family: var(--font-mono); color: var(--accent-neon);">
+            Parsing Binary STL Geometry...
+          </span>
+        </div>
+
+        <!-- Real-Time Computed Geometric Dimensions HUD -->
+        <div class="cad-specs-badge">
+          <h4 id="cadModelName">Top Enclosure (transmitter_top.stl)</h4>
+          <div class="cad-spec-row">
+            <span>Dimensions:</span>
+            <strong id="cadDimensions">90.0 × 102.0 × 21.5 mm</strong>
+          </div>
+          <div class="cad-spec-row">
+            <span>Triangle Count:</span>
+            <strong id="cadTriangles">20,874 Polygons</strong>
+          </div>
+          <div class="cad-spec-row">
+            <span>Estimated Weight:</span>
+            <strong id="cadWeightEst">~45.2 g (PETG @ 25% Infill)</strong>
+          </div>
+          <div class="cad-spec-row">
+            <span>Recommended Filament:</span>
+            <strong style="color: var(--accent-neon);">PETG / ASA (UV Stable)</strong>
+          </div>
+        </div>
+
+        <!-- Mouse Navigation Instructions Hint -->
+        <div class="cad-instructions-hint">
+          <span>🖱️ <strong>Left Click + Drag:</strong> Orbit / Rotate</span>
+          <span>•</span>
+          <span>🔍 <strong>Scroll Wheel:</strong> Zoom In / Out</span>
+          <span>•</span>
+          <span>✋ <strong>Right Click + Drag:</strong> Pan</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       INTERACTIVE IOT SIMULATOR & HARDWARE SANDBOX
+       ========================================================================== -->
+  <section id="simulator" class="section">
+    <div class="section-header">
+      <span class="section-tag">Interactive Hardware Lab</span>
+      <h2 class="section-title">Real-Time IoT Hardware & AI Simulator</h2>
+      <p class="section-desc">
+        Experience the exact firmware logic from <code>main.ino</code> and <code>reciver.ino</code>. Adjust field sensor inputs to trigger on-device TinyML inference, toggle the retro OLED HUD vs RoboEyes, and observe smart irrigation relay hysteresis.
+      </p>
+    </div>
+
+    <div class="simulator-container">
+      <div class="simulator-top-bar">
+        <div class="sim-title">
+          <span>🎮 Live Hardware Emulation Testbed</span>
+        </div>
+        <div class="sim-status-indicators">
+          <div class="indicator active">
+            <span class="dot-indicator"></span>
+            <span>SoftAP: CropAI (192.168.4.1)</span>
+          </div>
+          <div class="indicator active">
+            <span class="dot-indicator"></span>
+            <span>FreeRTOS Core 0 & 1 Active</span>
+          </div>
+          <button id="wifiToggleBtn" class="btn-secondary" style="padding: 0.38rem 0.85rem; font-size: 0.8rem;">
+            🟢 Wi-Fi Link: Connected
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Preset Selector -->
+      <div style="display: flex; gap: 0.65rem; align-items: center; margin-bottom: 1.6rem; flex-wrap: wrap;">
+        <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase;">Quick Field Scenarios:</span>
+        <button id="presetPaddy" class="prompt-chip">🌾 Flooded Paddy (Wet & Warm)</button>
+        <button id="presetMaize" class="prompt-chip">🌽 Balanced Maize (Moderate Soil)</button>
+        <button id="presetChickpea" class="prompt-chip">🫘 Dry Chickpea (Low Soil & Cool)</button>
+      </div>
+
+      <div class="simulator-grid">
+        <!-- Panel 1: Environmental Sensor Controls -->
+        <div class="sim-panel">
+          <div class="panel-header">
+            <span class="panel-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path></svg>
+              Sensor Array Inputs
+            </span>
+            <span class="badge-pin">ESP32-S3 ADC / GPIO</span>
+          </div>
+
+          <!-- Soil Moisture -->
+          <div class="control-group">
+            <div class="control-label">
+              <span>🌱 Soil Moisture (GPIO 2)</span>
+              <span id="soilVal" class="control-val">24 %</span>
+            </div>
+            <input type="range" id="soilSlider" class="range-slider" min="0" max="100" value="24">
+            <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-dim); margin-top: 4px; font-weight: 600;">
+              <span>0% (Wilting Point)</span>
+              <span style="color: var(--accent-amber);">30% (Pump ON)</span>
+              <span style="color: var(--primary-light);">45% (Pump OFF)</span>
+              <span>100% (Saturated)</span>
+            </div>
+          </div>
+
+          <!-- Ambient Temperature -->
+          <div class="control-group">
+            <div class="control-label">
+              <span>🌡️ Temperature (DHT11 GPIO 1)</span>
+              <span id="tempVal" class="control-val">27.5 °C</span>
+            </div>
+            <input type="range" id="tempSlider" class="range-slider" min="10" max="48" step="0.5" value="27.5">
+          </div>
+
+          <!-- Relative Humidity -->
+          <div class="control-group">
+            <div class="control-label">
+              <span>💧 Relative Humidity (DHT11)</span>
+              <span id="humVal" class="control-val">62 %</span>
+            </div>
+            <input type="range" id="humSlider" class="range-slider" min="15" max="98" value="62">
+          </div>
+
+          <!-- Light Sensor LDR -->
+          <div class="control-group">
+            <div class="control-label">
+              <span>☀️ Ambient Light (LDR GPIO 6)</span>
+              <span id="ldrVal" class="control-val">2850 (DAY)</span>
+            </div>
+            <input type="range" id="ldrSlider" class="range-slider" min="300" max="4095" step="50" value="2850">
+            <div style="font-size: 0.74rem; color: var(--text-dim); margin-top: 4px;">
+              Threshold: &gt; 2000 ADC Count = DAY • &le; 2000 = NIGHT
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 2: OLED Display & TinyML Intelligence -->
+        <div class="sim-panel">
+          <div class="panel-header">
+            <span class="panel-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+              1.3" OLED (SH1106 I2C)
+            </span>
+            <span class="badge-pin">SDA: 4 • SCL: 5</span>
+          </div>
+
+          <!-- OLED Screen Simulator -->
+          <div class="oled-frame">
+            <div class="oled-canvas-wrap">
+              <canvas id="oledCanvas" width="128" height="64"></canvas>
+            </div>
+            <div class="oled-controls">
+              <span style="font-size: 0.76rem; color: #cbd5e1; font-family: var(--font-mono);">
+                128×64 Monochrome Display
+              </span>
+              <button id="touchTriggerBtn" class="btn-touch" title="Simulates touching GPIO 7">
+                👆 Touch Pin (GPIO 7)
+              </button>
+            </div>
+          </div>
+
+          <!-- TinyML Inference Card -->
+          <div class="tinyml-card">
+            <div class="tinyml-header">
+              <span class="tinyml-title">🧠 Edge Impulse TinyML Classifier</span>
+              <span id="cropRecConf" style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--accent-neon); font-weight: 700;">94.6% match</span>
+            </div>
+            <div style="font-size: 1.25rem; font-weight: 800; color: #ffffff;" id="cropRecName">
+              Maize (Corn)
+            </div>
+            <div class="confidence-bar-bg">
+              <div id="cropRecBar" class="confidence-bar-fill"></div>
+            </div>
+            <div style="font-size: 0.76rem; color: var(--text-dim); margin-top: 5px;">
+              Input Tensor: <code>[Temp, Humidity, Soil%]</code> • Latency: ~11.8ms
+            </div>
+            <div id="tinymlCandidates" class="tinyml-tags"></div>
+          </div>
+        </div>
+
+        <!-- Panel 3: Receiver Node & Smart Irrigation Actuator -->
+        <div class="sim-panel">
+          <div class="panel-header">
+            <span class="panel-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+              Irrigation Node (reciver.ino)
+            </span>
+            <span class="badge-pin">Relay: GPIO 27</span>
+          </div>
+
+          <div class="actuator-card">
+            <div id="relayBanner" class="relay-status-banner pump-active">
+              <div>
+                <div id="pumpStatusText" style="font-size: 0.88rem; font-weight: 800; font-family: var(--font-mono); color: var(--accent-neon);">
+                  RELAY CLOSED • PUMP RUNNING
+                </div>
+                <div id="pumpReasonText" style="font-size: 0.74rem; color: var(--text-dim); margin-top: 2px;">
+                  Soil moisture &lt; 30% (Hysteresis low trigger)
+                </div>
+              </div>
+              <div class="live-pulse" style="width: 12px; height: 12px;"></div>
+            </div>
+
+            <!-- Pump Visual & Water Animation -->
+            <div id="pumpVisualBox" class="pump-visual-box pump-active">
+              <div class="water-flow-animation"></div>
+              <div class="pump-icon-wrap">
+                💧
+              </div>
+              <div style="position: absolute; bottom: 8px; right: 10px; font-size: 0.72rem; font-family: var(--font-mono); color: rgba(255,255,255,0.9); z-index: 3; font-weight: 700;">
+                Flow: 4.2 L/min
+              </div>
+            </div>
+
+            <div class="hysteresis-box">
+              <strong>Dual-Threshold Anti-Chatter Hysteresis:</strong><br/>
+              • <strong>ON Threshold:</strong> Soil drops below <strong>30%</strong><br/>
+              • <strong>OFF Threshold:</strong> Soil rises above <strong>45%</strong><br/>
+              • <strong>Fail-Safe 1:</strong> Auto-cutoff if Wi-Fi link drops &gt; 10s<br/>
+              • <strong>Fail-Safe 2:</strong> Max continuous run 5 min (30s cooldown)
+            </div>
+
+            <!-- SoftAP Live JSON Feed -->
+            <div style="margin-top: 0.85rem;">
+              <div style="display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--text-dim); margin-bottom: 4px; font-weight: 600;">
+                <span>Live REST Endpoint: <code>/status</code></span>
+                <span>HTTP 200 OK</span>
+              </div>
+              <pre id="liveStatusJson" style="background: rgba(0,0,0,0.55); padding: 8px; border-radius: 6px; font-family: var(--font-mono); font-size: 0.74rem; color: #a7f3d0; margin: 0; max-height: 95px; overflow-y: auto;"></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SYSTEM ARCHITECTURE & IOT NETWORK TOPOLOGY
+       ========================================================================== -->
+  <section id="architecture" class="section">
+    <div class="section-header">
+      <span class="section-tag">System Engineering</span>
+      <h2 class="section-title">Hardware Architecture & Communication Topology</h2>
+      <p class="section-desc">
+        A decentralized multi-node architecture designed for autonomous field deployment, high electrical safety, and seamless off-grid operation.
+      </p>
+    </div>
+
+    <div class="arch-grid">
+      <!-- Node 1 -->
+      <div class="arch-card">
+        <div class="arch-icon">📡</div>
+        <h3 class="arch-title">Field Node 1: Sensor & AI Master Hub</h3>
+        <p class="arch-text">
+          Powered by the <strong>ESP32-S3</strong> dual-core microcontroller running FreeRTOS. Broadcasts a dedicated local Wi-Fi Access Point (<code>SSID: CropAI</code>) with zero reliance on cloud or commercial cellular networks.
+        </p>
+        <ul class="arch-list">
+          <li><strong>Core 0 (10KB stack):</strong> SoftAP Wi-Fi + Embedded HTTP WebServer</li>
+          <li><strong>Core 1 (16KB stack):</strong> Sensor polling + OLED HUD + TinyML</li>
+          <li><strong>Data Concurrency:</strong> Mutex-protected thread-safe sensor struct</li>
+          <li><strong>Human-Machine Interface:</strong> 1.3" OLED with animated RoboEyes & HUD</li>
+        </ul>
+      </div>
+
+      <!-- Node 2 -->
+      <div class="arch-card">
+        <div class="arch-icon">💧</div>
+        <h3 class="arch-title">Field Node 2: Smart Irrigation Actuator Node</h3>
+        <p class="arch-text">
+          Employs a <strong>Wemos D1 Mini / ESP32</strong> connected as a station to <code>CropAI</code>. Polls the master node via JSON HTTP client every 1,000ms and actuates the high-current relay module.
+        </p>
+        <ul class="arch-list">
+          <li><strong>Hysteresis Logic:</strong> Prevents mechanical contact erosion</li>
+          <li><strong>Watchdog Timer:</strong> 10-second link loss safety shutoff</li>
+          <li><strong>Thermal Safety:</strong> 5-minute continuous run cap with cooldown</li>
+          <li><strong>Optical Isolation:</strong> Optocoupled relay isolates motor inductive spikes</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Dataflow Timeline -->
+    <div class="flow-diagram">
+      <h3 style="font-size: 1.2rem; font-weight: 800; margin-bottom: 1.6rem; text-align: center;">
+        End-to-End Autonomous Data & Actuation Pipeline
+      </h3>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="flow-step-num">1</div>
+          <div class="flow-step-title">Biophysical Sensing</div>
+          <div class="flow-step-sub">Soil probe, DHT11 & LDR sampled concurrently on FreeRTOS Core 1</div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-step-num">2</div>
+          <div class="flow-step-title">Edge TinyML Inference</div>
+          <div class="flow-step-sub">Neural network classifies optimal crop from 3-feature tensor in 11.8ms</div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-step-num">3</div>
+          <div class="flow-step-title">Local SoftAP Broadcast</div>
+          <div class="flow-step-sub">Core 0 WebServer serializes JSON to <code>http://192.168.4.1/status</code></div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-step-num">4</div>
+          <div class="flow-step-title">Receiver HTTP Polling</div>
+          <div class="flow-step-sub">Irrigation node evaluates hysteresis thresholds against soil moisture</div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-step-num">5</div>
+          <div class="flow-step-title">Precision Actuation</div>
+          <div class="flow-step-sub">Submersible pump activates until soil hydration reaches upper band (45%)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       HARDWARE PINOUT & WIRING MATRIX
+       ========================================================================== -->
+  <section id="pinout" class="section">
+    <div class="section-header">
+      <span class="section-tag">Schematics & Pin Mapping</span>
+      <h2 class="section-title">Hardware Pinout & Circuit Interconnects</h2>
+      <p class="section-desc">
+        Complete reference wiring specifications for both the ESP32-S3 Master Sensor Unit and the Receiver Actuator Module.
+      </p>
+    </div>
+
+    <div class="table-container">
+      <table class="tech-table">
+        <thead>
+          <tr>
+            <th>Module</th>
+            <th>Pin / GPIO</th>
+            <th>Signal Type</th>
+            <th>Operating Voltage</th>
+            <th>Description & Calibration</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>DHT11 / DHT22</strong></td>
+            <td><span class="badge-gpio">GPIO 1</span></td>
+            <td>Digital Single-Wire</td>
+            <td>3.3V DC</td>
+            <td>Ambient temperature (-20 to 60°C) and relative humidity (20–90% RH).</td>
+          </tr>
+          <tr>
+            <td><strong>Capacitive Soil Sensor</strong></td>
+            <td><span class="badge-gpio">GPIO 2</span></td>
+            <td>Analog Input (ADC1_CH1)</td>
+            <td>3.3V DC</td>
+            <td>12-bit ADC (0–4095). Inverted linear mapping: 4095 (bone dry) to 0 (submerged).</td>
+          </tr>
+          <tr>
+            <td><strong>SH1106 OLED Display</strong></td>
+            <td><span class="badge-gpio">GPIO 4</span> (SDA)</td>
+            <td>I2C Data</td>
+            <td>3.3V DC</td>
+            <td>I2C bus address <code>0x3C</code>. Connect 4.7kΩ pull-up resistor to 3.3V.</td>
+          </tr>
+          <tr>
+            <td><strong>SH1106 OLED Display</strong></td>
+            <td><span class="badge-gpio">GPIO 5</span> (SCL)</td>
+            <td>I2C Clock</td>
+            <td>3.3V DC</td>
+            <td>I2C clock bus driving 128×64 monochromatic display at 400kHz.</td>
+          </tr>
+          <tr>
+            <td><strong>LDR Light Sensor</strong></td>
+            <td><span class="badge-gpio">GPIO 6</span></td>
+            <td>Analog Input (ADC1_CH5)</td>
+            <td>3.3V DC</td>
+            <td>10kΩ voltage divider. Threshold: &gt; 2000 ADC count = DAY, &le; 2000 = NIGHT.</td>
+          </tr>
+          <tr>
+            <td><strong>Capacitive Touch Button</strong></td>
+            <td><span class="badge-gpio">GPIO 7</span></td>
+            <td>Capacitive Touch</td>
+            <td>Internal</td>
+            <td>Hardware capacitive sensor. Threshold 25,000 toggles RoboEyes / Telemetry HUD.</td>
+          </tr>
+          <tr>
+            <td><strong>Irrigation Relay Node</strong></td>
+            <td><span class="badge-gpio">GPIO 27</span></td>
+            <td>Digital Output</td>
+            <td>5.0V Coil / 3.3V Logic</td>
+            <td>Drives optocoupled SPDT relay. High-level triggers submersible water pump.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Power & Circuit Notes -->
+    <div class="arch-grid" style="margin-top: 1.5rem;">
+      <div class="arch-card">
+        <h4 style="font-size: 1.05rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--accent-neon);">⚡ Solar Power & Battery Subsystem</h4>
+        <p style="font-size: 0.92rem; color: var(--text-dim);">
+          Equipped with an 18V 20W Monocrystalline PV panel routed through an MPPT charger to dual 18650 Li-ion cells. Provides 72+ hours continuous autonomous runtime during overcast monsoons.
+        </p>
+      </div>
+
+      <div class="arch-card">
+        <h4 style="font-size: 1.05rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--accent-neon);">🛡️ Inductive Kickback & Snubber</h4>
+        <p style="font-size: 0.92rem; color: var(--text-dim);">
+          Water pumps exhibit severe inductive back-EMF during shutoff. The relay module features a flyback diode (1N4007) and optocoupler isolation (PC817) to prevent micro-resets or memory corruption on the microcontroller.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       EDGE IMPULSE TINYML CLASSIFIER
+       ========================================================================== -->
+  <section id="tinyml" class="section">
+    <div class="section-header">
+      <span class="section-tag">Machine Learning at the Edge</span>
+      <h2 class="section-title">Edge Impulse TinyML Model Architecture</h2>
+      <p class="section-desc">
+        Running full neural network inference directly on the ESP32-S3 microcontroller with zero external internet dependencies.
+      </p>
+    </div>
+
+    <div class="arch-grid">
+      <div class="arch-card">
+        <h3 style="font-size: 1.18rem; font-weight: 800; margin-bottom: 0.9rem;">
+          Inference Pipeline & Tensor Mechanics
+        </h3>
+        <p style="font-size: 0.94rem; color: var(--text-dim); margin-bottom: 1.25rem;">
+          The model <code>Akash501-project-1_inferencing.h</code> accepts a 1D feature array of 3 normalized floating-point variables:
+        </p>
+        <pre style="background: rgba(0,0,0,0.45); padding: 1.1rem; border-radius: 8px; font-family: var(--font-mono); font-size: 0.84rem; color: var(--accent-neon); margin-bottom: 1.25rem;">
+// Feature Callback Buffer
+features[0] = temperature;   // Range: 10.0 to 50.0 °C
+features[1] = humidity;      // Range: 15.0 to 100.0 %
+features[2] = soilPercent;   // Range: 0 to 100 %
+
+signal_t signal;
+signal.total_length = 3;
+signal.get_data = &raw_feature_get_data;
+
+// Run Quantized INT8 Inference
+run_classifier(&signal, &result, false);</pre>
+
+        <ul class="arch-list">
+          <li><strong>Model Footprint:</strong> 18.4 KB Flash ROM • 3.2 KB RAM Heap</li>
+          <li><strong>Inference Latency:</strong> 11.8 ms on 240MHz Xtensa LX7</li>
+          <li><strong>Quantization:</strong> 8-bit Integer (INT8) with zero floating-point penalty</li>
+          <li><strong>FreeRTOS Safe:</strong> Executed strictly in Core 1 task loop</li>
+        </ul>
+      </div>
+
+      <div class="arch-card">
+        <h3 style="font-size: 1.18rem; font-weight: 800; margin-bottom: 0.9rem;">
+          Agronomic Class Categories & Bioclimatic Envelopes
+        </h3>
+        <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+          <div style="background: rgba(255,255,255,0.05); padding: 0.85rem; border-radius: 6px; border-left: 3px solid var(--accent-neon);">
+            <strong>Rice (Paddy):</strong> Requires flooded or near-saturation soil (&ge; 60%), ambient temperature 22–34°C, and relative humidity &gt; 70%.
+          </div>
+          <div style="background: rgba(255,255,255,0.05); padding: 0.85rem; border-radius: 6px; border-left: 3px solid var(--accent-amber);">
+            <strong>Maize (Corn):</strong> Thrives in well-drained loamy soil (40–60% moisture), moderate temperature (20–32°C), and moderate humidity.
+          </div>
+          <div style="background: rgba(255,255,255,0.05); padding: 0.85rem; border-radius: 6px; border-left: 3px solid #38bdf8;">
+            <strong>Chickpea / Gram:</strong> Sensitive to waterlogging; thrives in low-to-moderate moisture (20–40%) and cool-to-mild climate (15–28°C).
+          </div>
+          <div style="background: rgba(255,255,255,0.05); padding: 0.85rem; border-radius: 6px; border-left: 3px solid #f472b6;">
+            <strong>Cotton:</strong> Drought-tolerant deep root crop suitable for warm semi-arid conditions (30–50% soil moisture, 25–38°C).
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SMART IRRIGATION & HYSTERESIS DEEP DIVE
+       ========================================================================== -->
+  <section id="irrigation" class="section">
+    <div class="section-header">
+      <span class="section-tag">Water Stewardship</span>
+      <h2 class="section-title">Smart Irrigation & Anti-Chatter Hysteresis</h2>
+      <p class="section-desc">
+        How Nitroasis prevents relay oscillation, eliminates dry-run pump burnout, and enforces hardware fail-safes.
+      </p>
+    </div>
+
+    <div class="arch-grid">
+      <div class="arch-card">
+        <h3 class="arch-title">Anti-Chatter Hysteresis</h3>
+        <p class="arch-text">
+          If a single threshold (e.g. 35%) is used, wind and soil absorption cause the analog reading to bounce between 34% and 36%, switching the relay thousands of times an hour and destroying motor windings.
+        </p>
+        <p class="arch-text" style="margin-top: 0.75rem;">
+          Nitroasis creates an intentional <strong>15% hysteresis gap</strong>:
+          <br/>• Turn ON only when soil drops below <strong>30%</strong>
+          <br/>• Keep pumping until soil reaches <strong>45%</strong>
+        </p>
+      </div>
+
+      <div class="arch-card">
+        <h3 class="arch-title">Watchdog Fail-Safe Timer</h3>
+        <p class="arch-text">
+          If the transmitter node loses power, or Wi-Fi interference breaks communication, the receiver's <code>LINK_TIMEOUT_MS</code> (10,000ms) timer triggers.
+        </p>
+        <p class="arch-text" style="margin-top: 0.75rem;">
+          Instead of leaving the water pump running and flooding the farm, the receiver shuts the relay OFF immediately upon 10 seconds of telemetry silence.
+        </p>
+      </div>
+
+      <div class="arch-card">
+        <h3 class="arch-title">Thermal Run Cap & Cooldown</h3>
+        <p class="arch-text">
+          Submersible farm pumps rely on surrounding water for cooling. In the event of pipe bursts or dry borehole wells, continuous running causes catastrophic motor seizure.
+        </p>
+        <p class="arch-text" style="margin-top: 0.75rem;">
+          Nitroasis limits any single continuous irrigation cycle to <strong>5 minutes maximum</strong>, enforcing a mandatory <strong>30-second thermal cooldown</strong>.
+        </p>
+      </div>
+
+      <div class="arch-card">
+        <h3 class="arch-title">Aquaponic Nutrient Recycling</h3>
+        <p class="arch-text">
+          Fish excretions and feed residue decompose via nitrifying bacteria into soluble bio-active nitrates ($NO_3^-$).
+        </p>
+        <p class="arch-text" style="margin-top: 0.75rem;">
+          Nitroasis explores routing this nutrient-rich aquaculture water directly into the drip irrigation network, cutting synthetic fertilizer expenditure by up to 40%.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       AI AGRONOMIST ASSISTANT (NITROBOT)
+       ========================================================================== -->
+  <section id="agronomist" class="section">
+    <div class="section-header">
+      <span class="section-tag">Agronomic Intelligence</span>
+      <h2 class="section-title">NitroBot — AI Farming & Policy Assistant</h2>
+      <p class="section-desc">
+        Integrated conversational agronomy agent trained on sustainable crop management, NPK nutrient balancing, and Indian agricultural subsidy schemes.
+      </p>
+    </div>
+
+    <div class="assistant-container">
+      <div id="chatHistory" class="chat-history">
+        <div class="chat-bubble bot">
+          🌱 <strong>Welcome to NitroBot!</strong> I am your on-site agronomy AI assistant powered by the Nitroasis edge architecture. I can assist you with soil fertilization, micro-irrigation scheduling, fish-tank wastewater nutrient recycling, and government agricultural schemes (like PM-Kisan and PMKSY). What questions can I answer for your field today?
+        </div>
+      </div>
+
+      <div class="quick-prompts">
+        <button class="prompt-chip" data-prompt="How does fish tank water recycling work in Nitroasis?">🐟 Aquaponics Recycling</button>
+        <button class="prompt-chip" data-prompt="What Indian government schemes support smart irrigation?">🏛️ Government Subsidies</button>
+        <button class="prompt-chip" data-prompt="How do I balance NPK nutrients for tomatoes?">🌾 NPK Balancing</button>
+        <button class="prompt-chip" data-prompt="Why use FreeRTOS dual-core on the ESP32-S3?">⚡ FreeRTOS Dual-Core</button>
+        <button class="prompt-chip" data-prompt="Explain the smart irrigation hysteresis mechanism">💧 Hysteresis Logic</button>
+      </div>
+
+      <div class="chat-input-bar">
+        <input type="text" id="chatInput" class="chat-input" placeholder="Ask about soil health, drip irrigation, pest control, or government subsidies...">
+        <button id="chatSendBtn" class="btn-primary" style="padding: 0.85rem 1.5rem;">
+          Send
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       FIRMWARE EXPLORER & REST API REFERENCE
+       ========================================================================== -->
+  <section id="code" class="section">
+    <div class="section-header">
+      <span class="section-tag">Source Code & Developer Reference</span>
+      <h2 class="section-title">Firmware Modules & REST API Reference</h2>
+      <p class="section-desc">
+        Explore the annotated C++ firmware code and REST API endpoints powering Nitroasis.
+      </p>
+    </div>
+
+    <div class="code-box">
+      <div class="code-header">
+        <div class="code-tabs">
+          <button class="code-tab-btn active" data-code="main">main.ino (ESP32-S3 Master)</button>
+          <button class="code-tab-btn" data-code="receiver">reciver.ino (Actuator Node)</button>
+          <button class="code-tab-btn" data-code="api">REST API Specification</button>
+        </div>
+        <button id="copyCodeBtn" class="btn-secondary" style="padding: 0.35rem 0.85rem; font-size: 0.78rem;">
+          📋 Copy Code
+        </button>
+      </div>
+      <pre class="code-pre"><code id="codeDisplay">// ============================================================
+// NITROASIS: ESP32-S3 SENSOR & TINYML HUB (main.ino)
+// Dual-Core FreeRTOS + Edge Impulse + Wi-Fi SoftAP
+// ============================================================
+#include &lt;WiFi.h&gt;
+#include &lt;WebServer.h&gt;
+#include &lt;ArduinoJson.h&gt;
+#include &lt;DHT.h&gt;
+#include &lt;Wire.h&gt;
+#include &lt;Adafruit_SH110X.h&gt;
+#include &lt;FluxGarage_RoboEyes.h&gt;
+#include &lt;Akash501-project-1_inferencing.h&gt;
+
+#define DHTPIN       1
+#define DHTTYPE      DHT11
+#define SOIL_SENSOR  2
+#define SDA_PIN      4
+#define SCL_PIN      5
+#define LDR_PIN      6
+#define TOUCH_PIN    7
+#define TOUCH_THRESHOLD 25000
+
+const char *ssid = "CropAI";
+const char *password = "12345678";
+
+DHT dht(DHTPIN, DHTTYPE);
+Adafruit_SH1106G display(128, 64, &Wire, -1);
+RoboEyes&lt;Adafruit_SH1106G&gt; roboEyes(display);
+WebServer server(80);
+
+volatile float temperature = 0.0;
+volatile float humidity = 0.0;
+volatile int soilPercent = 0;
+String best_crop = "--";
+String daynight = "--";
+float features[3];
+
+TaskHandle_t ServerTask;
+TaskHandle_t SensorTask;
+SemaphoreHandle_t dataMutex;
+
+// Core 0: Web Server Task
+void ServerTaskCode(void *pvParameters) {
+  WiFi.mode(WIFI_AP);
+  WiFi.softAP(ssid, password);
+  server.on("/", HTTP_GET, handleRoot);
+  server.on("/status", HTTP_GET, handleStatus);
+  server.begin();
+  while (true) {
+    server.handleClient();
+    vTaskDelay(5 / portTICK_PERIOD_MS);
+  }
+}
+
+// Core 1: Sensor Sampling & TinyML Inference
+void SensorTaskCode(void *pvParameters) {
+  for (;;) {
+    float t = dht.readTemperature();
+    float h = dht.readHumidity();
+    int soilRaw = analogRead(SOIL_SENSOR);
+    soilPercent = constrain(map(soilRaw, 4095, 0, 0, 100), 0, 100);
+    daynight = analogRead(LDR_PIN) > 2000 ? "DAY" : "NIGHT";
+
+    // Edge Impulse classification
+    features[0] = t; features[1] = h; features[2] = soilPercent;
+    signal_t signal = { .total_length = 3, .get_data = &raw_feature_get_data };
+    ei_impulse_result_t result;
+    if (run_classifier(&signal, &result, false) == EI_IMPULSE_OK) {
+      // Find top label
+    }
+
+    if (roboMode) roboEyes.update();
+    else displaySensorHUD();
+
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+  }
+}</code></pre>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       FIELD DEPLOYMENT GUIDE & TROUBLESHOOTING
+       ========================================================================== -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-tag">Field Operations</span>
+      <h2 class="section-title">Deployment Checklist & Troubleshooting Matrix</h2>
+      <p class="section-desc">
+        Field-tested instructions for commissioning Nitroasis in remote agricultural plots.
+      </p>
+    </div>
+
+    <div class="table-container">
+      <table class="tech-table">
+        <thead>
+          <tr>
+            <th>Symptom / Issue</th>
+            <th>Probable Cause</th>
+            <th>Diagnostic Test</th>
+            <th>Recommended Solution</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>OLED Display remains black</strong></td>
+            <td>I2C bus address mismatch or loose wiring on SDA/SCL.</td>
+            <td>Run an I2C scanner sketch; check for address <code>0x3C</code> or <code>0x3D</code>.</td>
+            <td>Verify SDA on GPIO 4 and SCL on GPIO 5. Ensure pull-up resistors are installed.</td>
+          </tr>
+          <tr>
+            <td><strong>Soil Moisture always reads 0% or 100%</strong></td>
+            <td>Inverted ADC calibration or analog channel attenuation issue.</td>
+            <td>Measure voltage on GPIO 2: Air should be ~3.0V, water ~1.2V.</td>
+            <td>Adjust <code>map(soilRaw, 4095, 0, 0, 100)</code> offsets to match your soil salinity.</td>
+          </tr>
+          <tr>
+            <td><strong>Receiver motor turns OFF after exactly 10s</strong></td>
+            <td>Link timeout fail-safe triggered due to lost HTTP connection.</td>
+            <td>Check Wi-Fi RSSI signal between transmitter and receiver nodes.</td>
+            <td>Ensure receiver is associated with <code>CropAI</code> AP. Reposition high-gain antennas.</td>
+          </tr>
+          <tr>
+            <td><strong>Edge Impulse compiler error on build</strong></td>
+            <td>Naming collision between RoboEyes direction macros and Edge Impulse.</td>
+            <td>Look for <code>#undef N</code>, <code>#undef S</code>, etc. before include headers.</td>
+            <td>Keep lines 15–23 in <code>main.ino</code> undefining compass macros before including EI headers.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       FOOTER
+       ========================================================================== -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <h3>🌱 NITROASIS</h3>
+        <p>
+          Sustainable Smart Farming System with Integrated Edge AI, TinyML Micro-Inference, and Fail-Safe IoT Irrigation.
+        </p>
+        <p style="margin-top: 0.75rem; font-size: 0.82rem; color: var(--accent-neon); font-weight: 700;">
+          Created by Arun Hobbies (ARUNKANNAA)
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Core Modules</h4>
+        <ul>
+          <li><a href="#cad-viewer">3D STL CAD Viewer</a></li>
+          <li><a href="#simulator">IoT Testbed Simulator</a></li>
+          <li><a href="#architecture">Dual-Core FreeRTOS</a></li>
+          <li><a href="#tinyml">Edge Impulse TinyML</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Hardware & Electronics</h4>
+        <ul>
+          <li><a href="#pinout">ESP32-S3 Wiring Matrix</a></li>
+          <li><a href="#irrigation">Hysteresis Irrigation</a></li>
+          <li><a href="#agronomist">NitroBot Assistant</a></li>
+          <li><a href="#code">REST API Specification</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Original Repository</h4>
+        <ul>
+          <li><a href="https://github.com/ARUNKANNAA/Nitroasis" target="_blank" rel="noopener">GitHub: ARUNKANNAA/Nitroasis</a></li>
+          <li><a href="#code">main.ino Firmware</a></li>
+          <li><a href="#code">reciver.ino Firmware</a></li>
+          <li><a href="#overview">Field Prototype Unit</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>
+        © 2026 Arun Hobbies. All rights reserved. Professional Documented Web Edition.
+      </div>
+      <div>
+        Nitroasis — Autonomous, sustainable, and technology-driven farming.
+      </div>
+    </div>
+  </footer>
+
+  <script src="stl_viewer.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
