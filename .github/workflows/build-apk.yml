@@ -26,20 +26,25 @@ jobs:
           java-version: '17'
           cache: 'gradle'
 
-      - name: Make Gradle Executable
+      - name: Make Gradle Executable & Clean Dot Files
         run: |
           sed -i 's/\r$//' android/gradlew
           chmod +x android/gradlew
+          rm -f android/app/src/main/assets/.nojekyll
 
       - name: Build Debug APK
         run: |
           cd android
-          ./gradlew assembleDebug --stacktrace --no-daemon
+          if ! ./gradlew assembleDebug --stacktrace --no-daemon > ../gradle_output.log 2>&1; then
+            cat ../gradle_output.log | tail -n 60
+            ERR_MSG=$(cat ../gradle_output.log | grep -E "FAILURE|Error|error:|Exception" | head -n 3 | tr '\n' ' ')
+            echo "::error::Gradle Build Failed: $ERR_MSG"
+            exit 1
+          fi
 
       - name: Prepare APK Output
         run: |
           mkdir -p build-output
-          find android/ -name "*.apk"
           find android/ -name "*.apk" -exec cp {} build-output/Nitroasis-v1.0.0.apk \;
           ls -la build-output/
 
