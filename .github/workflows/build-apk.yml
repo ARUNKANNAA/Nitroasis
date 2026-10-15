@@ -26,18 +26,17 @@ jobs:
           java-version: '17'
           cache: 'gradle'
 
-      - name: Make Gradle Executable & Clean Dot Files
+      - name: Make Gradle Executable
         run: |
           sed -i 's/\r$//' android/gradlew
           chmod +x android/gradlew
-          rm -f android/app/src/main/assets/.nojekyll
 
       - name: Build Debug APK
         run: |
           cd android
           if ! ./gradlew assembleDebug --stacktrace --no-daemon > ../gradle_output.log 2>&1; then
-            cat ../gradle_output.log | tail -n 60
-            ERR_MSG=$(cat ../gradle_output.log | grep -E "FAILURE|Error|error:|Exception" | head -n 3 | tr '\n' ' ')
+            cat ../gradle_output.log | tail -n 80
+            ERR_MSG=$(cat ../gradle_output.log | grep -A 4 -E "FAILURE|Error|error:|Exception" | head -n 4 | tr '\n' ' ')
             echo "::error::Gradle Build Failed: $ERR_MSG"
             exit 1
           fi
