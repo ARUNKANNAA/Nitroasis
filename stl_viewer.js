@@ -109,10 +109,27 @@ function initSTLViewer() {
   window.addEventListener('resize', onWindowResize);
   setupViewerControls();
 
-  // 8. Load Initial Model (Top Enclosure)
+  // 8. Intersection Observer to eliminate scroll lag when viewer is offscreen
+  let isViewerInView = true;
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        isViewerInView = entry.isIntersecting;
+      });
+    }, { threshold: 0.05 });
+    observer.observe(container);
+  }
+
+  // 9. Load Initial Model (Top Enclosure)
   loadCADModel('top');
 
-  // 9. Animation Loop
+  // 10. Animation Loop
+  function animate() {
+    requestAnimationFrame(animate);
+    if (!isViewerInView) return;
+    if (controls) controls.update();
+    if (renderer && scene && camera) renderer.render(scene, camera);
+  }
   animate();
 }
 
@@ -124,12 +141,6 @@ function onWindowResize() {
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
   renderer.setSize(width, height);
-}
-
-function animate() {
-  requestAnimationFrame(animate);
-  if (controls) controls.update();
-  if (renderer && scene && camera) renderer.render(scene, camera);
 }
 
 // ==========================================================================
