@@ -34,20 +34,13 @@ jobs:
       - name: Build Debug APK
         run: |
           cd android
-          ./gradlew assembleDebug --stacktrace --no-daemon 2>&1 | tee ../build.log
-
-      - name: Show Failure Log in Step Summary
-        if: failure()
-        run: |
-          echo "### Build Failure Log" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          tail -n 80 build.log >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
+          ./gradlew assembleDebug --stacktrace --no-daemon
 
       - name: Prepare APK Output
         run: |
           mkdir -p build-output
-          cp android/app/build/outputs/apk/debug/app-debug.apk build-output/Nitroasis-v1.0.0.apk
+          find android/ -name "*.apk"
+          find android/ -name "*.apk" -exec cp {} build-output/Nitroasis-v1.0.0.apk \;
           ls -la build-output/
 
       - name: Upload APK Artifact
