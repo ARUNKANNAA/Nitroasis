@@ -16,13 +16,10 @@ android {
 
     buildTypes {
         debug {
-            applicationIdSuffix ""
             signingConfig signingConfigs.debug
         }
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            // Sign release build with debug keystore for instant distribution
             signingConfig signingConfigs.debug
         }
     }

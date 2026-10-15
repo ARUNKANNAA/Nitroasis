@@ -26,13 +26,15 @@ jobs:
           java-version: '17'
           cache: 'gradle'
 
-      - name: Make Gradle Wrapper Executable
-        run: chmod +x android/gradlew
+      - name: Make Gradle Executable
+        run: |
+          sed -i 's/\r$//' android/gradlew
+          chmod +x android/gradlew
 
       - name: Build Debug APK
         run: |
           cd android
-          ./gradlew assembleDebug --stacktrace
+          ./gradlew assembleDebug --stacktrace --no-daemon 2>&1 | tee ../build.log
 
       - name: Prepare APK Output
         run: |
@@ -45,6 +47,13 @@ jobs:
         with:
           name: Nitroasis-v1.0.0-APK
           path: build-output/Nitroasis-v1.0.0.apk
+
+      - name: Upload Failure Log
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-failure-log
+          path: build.log
 
       - name: Publish to GitHub Release
         uses: softprops/action-gh-release@v2
