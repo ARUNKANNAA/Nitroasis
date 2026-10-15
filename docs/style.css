@@ -69,6 +69,8 @@
 html {
   scroll-behavior: smooth;
   font-size: 16px;
+  overscroll-behavior-y: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 body {
@@ -77,11 +79,11 @@ body {
   color: var(--text-main);
   line-height: 1.7;
   overflow-x: hidden;
+  overscroll-behavior-y: none;
   background-image: 
     radial-gradient(circle at 12% 18%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
     radial-gradient(circle at 88% 62%, rgba(0, 255, 149, 0.06) 0%, transparent 45%),
     radial-gradient(circle at 50% 90%, rgba(5, 150, 105, 0.07) 0%, transparent 50%);
-  background-attachment: fixed;
 }
 
 /* Navigation Bar */
@@ -581,6 +583,7 @@ body {
   position: relative;
   background: radial-gradient(circle at center, #0f1c14 0%, #060b08 100%);
   cursor: grab;
+  touch-action: none;
 }
 
 #cadCanvasContainer:active {

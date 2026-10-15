@@ -55,34 +55,38 @@ jobs:
       - name: Prepare APK Output
         run: |
           mkdir -p build-output
-          find android/ -name "*.apk" -exec cp {} build-output/Nitroasis-v1.0.0.apk \;
+          find android/ -name "*.apk" -exec cp {} build-output/Nitroasis-v1.0.1.apk \;
+          cp build-output/Nitroasis-v1.0.1.apk build-output/Nitroasis-v1.0.0.apk
           ls -la build-output/
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Nitroasis-v1.0.0-APK
-          path: build-output/Nitroasis-v1.0.0.apk
+          name: Nitroasis-v1.0.1-APK
+          path: build-output/Nitroasis-v1.0.1.apk
 
       - name: Publish to GitHub Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main'
         with:
-          tag_name: v1.0.0
-          name: "Nitroasis v1.0.0 — Android APK & Production Release"
+          tag_name: v1.0.1
+          name: "Nitroasis v1.0.1 — Android APK (Smooth 60FPS Scroll & Zero-Reload Fix)"
           draft: false
           prerelease: false
           overwrite: true
           body: |
-            ### 🌱 Nitroasis Android Mobile App (v1.0.0)
+            ### 🌱 Nitroasis Android Mobile App (v1.0.1)
 
-            Direct installable APK for Android devices. Features full embedded offline telemetry, on-device Edge Impulse TinyML crop classification, 3D CAD STL enclosure viewer, and local ESP32-S3 SoftAP connection.
+            Bugfix release resolving the upward-scroll pull-to-refresh issue and optimizing WebGL rendering performance for buttery-smooth 60/120 FPS scrolling:
 
+            - **Scroll Fix:** Removed disruptive pull-to-refresh container; scrolling up and down is now 100% native and uninterrupted.
+            - **Performance:** Enabled IntersectionObserver on the 3D STL CAD viewer so WebGL pauses off-screen, eliminating GPU frame drops and lag.
             - **App Name:** Nitroasis
             - **Package:** `com.arunkannaa.nitroasis`
             - **Target Platform:** Android 7.0 (API 24) to Android 14 (API 34)
-            - **Architecture:** Universal (ARMv7, ARM64, x86_64)
-            - **Download:** Click `Nitroasis-v1.0.0.apk` below to download and install.
-          files: build-output/Nitroasis-v1.0.0.apk
+            - **Download:** Click `Nitroasis-v1.0.1.apk` below to download and install.
+          files: |
+            build-output/Nitroasis-v1.0.1.apk
+            build-output/Nitroasis-v1.0.0.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
