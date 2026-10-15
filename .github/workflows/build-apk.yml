@@ -24,19 +24,20 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
+          cache: 'gradle'
 
       - name: Make Gradle Wrapper Executable
         run: chmod +x android/gradlew
 
-      - name: Build Release APK
+      - name: Build Debug APK
         run: |
           cd android
-          ./gradlew assembleRelease --stacktrace
+          ./gradlew assembleDebug --stacktrace
 
-      - name: Rename and Prepare APK
+      - name: Prepare APK Output
         run: |
           mkdir -p build-output
-          cp android/app/build/outputs/apk/release/app-release.apk build-output/Nitroasis-v1.0.0.apk || cp android/app/build/outputs/apk/debug/app-debug.apk build-output/Nitroasis-v1.0.0.apk
+          cp android/app/build/outputs/apk/debug/app-debug.apk build-output/Nitroasis-v1.0.0.apk
           ls -la build-output/
 
       - name: Upload APK Artifact
@@ -45,12 +46,14 @@ jobs:
           name: Nitroasis-v1.0.0-APK
           path: build-output/Nitroasis-v1.0.0.apk
 
-      - name: Create or Update GitHub Release
+      - name: Publish to GitHub Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main'
         with:
           tag_name: v1.0.0
           name: "Nitroasis v1.0.0 — Android APK & Production Release"
+          draft: false
+          prerelease: false
           body: |
             ### 🌱 Nitroasis Android Mobile App (v1.0.0)
 
@@ -58,8 +61,9 @@ jobs:
 
             - **App Name:** Nitroasis
             - **Package:** `com.arunkannaa.nitroasis`
-            - **Target Android Version:** Android 7.0 (API 24) to Android 14 (API 34)
-            - **Download:** Download `Nitroasis-v1.0.0.apk` below and install directly on your phone.
+            - **Target Platform:** Android 7.0 (API 24) to Android 14 (API 34)
+            - **Architecture:** Universal (ARMv7, ARM64, x86_64)
+            - **Download:** Click `Nitroasis-v1.0.0.apk` below to download and install.
           files: build-output/Nitroasis-v1.0.0.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
