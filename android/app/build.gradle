@@ -20,12 +20,6 @@ android {
     }
 }
 
-// Disable AarMetadata checks to allow building across Android SDK versions
-tasks.whenTaskAdded { task ->
-    if (task.name.contains("AarMetadata")) {
-        task.enabled = false
-    }
-}
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'

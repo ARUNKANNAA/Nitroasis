@@ -34,12 +34,23 @@ jobs:
       - name: Build Debug APK
         run: |
           cd android
-          if ! ./gradlew assembleDebug --stacktrace --no-daemon > ../gradle_output.log 2>&1; then
-            cat ../gradle_output.log | tail -n 80
-            ERR_MSG=$(cat ../gradle_output.log | grep -A 4 -E "FAILURE|Error|error:|Exception" | head -n 4 | tr '\n' ' ')
-            echo "::error::Gradle Build Failed: $ERR_MSG"
-            exit 1
-          fi
+          set -o pipefail
+          ./gradlew assembleDebug --stacktrace --no-daemon 2>&1 | tee ../gradle_output.log
+
+      - name: Report Build Diagnostics on Failure
+        if: failure()
+        run: |
+          echo "### Gradle Build Log (Tail)" >> $GITHUB_STEP_SUMMARY
+          echo '```text' >> $GITHUB_STEP_SUMMARY
+          tail -n 100 gradle_output.log >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          python3 -c "
+          with open('gradle_output.log') as f:
+              for line in f.readlines()[-60:]:
+                  clean = line.strip()
+                  if any(k in clean for k in ['FAILURE', 'What went wrong', 'Caused by', 'error:', 'Exception', '> ']):
+                      print(f'::error::{clean}')
+          "
 
       - name: Prepare APK Output
         run: |
@@ -61,6 +72,7 @@ jobs:
           name: "Nitroasis v1.0.0 — Android APK & Production Release"
           draft: false
           prerelease: false
+          overwrite: true
           body: |
             ### 🌱 Nitroasis Android Mobile App (v1.0.0)
 
